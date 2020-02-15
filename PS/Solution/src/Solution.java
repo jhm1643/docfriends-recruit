@@ -21,8 +21,27 @@ public class Solution {
 			}
 		}
 		
+		int a=0;
+		int b=0;
+		int max=0;
+		int min=0;
+		//최대값, 최소값 index a,b 구하기
 		for(int i=0;i<numbers.length;i++) {
-			System.out.println(numbers[i]);
+			if(i==0) {
+				max=min=numbers[i];
+			}
+			else {
+				if(numbers[i]>max) {
+					max = numbers[i];
+					b=i;
+				}
+				if(numbers[i]<min) {
+					min = numbers[i];
+					a=i;
+				}
+			}
 		}
+		
+		System.out.println(a+b);
 	}
 }
