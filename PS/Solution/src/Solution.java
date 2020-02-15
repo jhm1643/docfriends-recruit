@@ -1,12 +1,9 @@
 public class Solution {
 	
-	public static void main(String args[]) {
-		String q="ab23c4d56e78f9g12h34i5j12k45l67n89m99o1k123p456q567r768s890t67u456v345w234x23y239z";
+	public int[] getNumbersArray(String q) {
 		int numbers[] = new int[0];
 		char charArr[] = q.toCharArray();
 		String number="";
-		
-		//q에서 숫자 추출하여 numbers에 넣기
 		for(int i=0;i<charArr.length;i++) {
 			if(charArr[i]>=48 && charArr[i]<=57) {
 				number=number+charArr[i];
@@ -20,12 +17,14 @@ public class Solution {
 				number="";
 			}
 		}
-		
+		return numbers;
+	}
+	
+	public int getMinMaxIndexSum(int numbers[]) {
 		int a=0;
 		int b=0;
 		int max=0;
 		int min=0;
-		//최대값, 최소값 index a,b 구하기
 		for(int i=0;i<numbers.length;i++) {
 			if(i==0) {
 				max=min=numbers[i];
@@ -41,7 +40,13 @@ public class Solution {
 				}
 			}
 		}
-		
-		System.out.println(a+b);
+		return a+b;
+	}
+	
+	public static void main(String args[]) {
+		Solution solution = new Solution();
+		String q="ab23c4d56e78f9g12h34i5j12k45l67n89m99o1k123p456q567r768s890t67u456v345w234x23y239z";
+		int numbers[] = solution.getNumbersArray(q);
+		System.out.println(solution.getMinMaxIndexSum(numbers));
 	}
 }
