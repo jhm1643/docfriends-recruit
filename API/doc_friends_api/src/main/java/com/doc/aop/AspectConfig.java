@@ -21,6 +21,7 @@ public class AspectConfig {
 		try {
 			result = pjp.proceed();
 		}catch(Exception e) {
+			e.printStackTrace();
 			result = new ResponseEntity<String>("fail",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		log.info("[end] - " + pjp.getSignature().getName());

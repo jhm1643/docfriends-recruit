@@ -12,12 +12,17 @@ import com.doc.repo.AnswerRepository;
 import com.doc.repo.QuestionRepository;
 import com.doc.repo.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class CRUDServiceImpl implements CRUDService {
 
 	@Autowired
 	private QuestionRepository questionRepo;
+	@Autowired
 	private AnswerRepository answerRepo;
+	@Autowired
 	private UserRepository userRepo;
 	
 	@Override
@@ -28,7 +33,7 @@ public class CRUDServiceImpl implements CRUDService {
 
 	@Override
 	public ResponseEntity<String> questionCreate(Question question) {
-		questionRepo.save(null);
+		questionRepo.save(question);
 		return new ResponseEntity<String>("success",HttpStatus.OK);
 	}
 

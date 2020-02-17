@@ -23,6 +23,7 @@ public class CRUDController {
 
 	@Autowired
 	private CRUDService crudService;
+	
 	/****************************************** User CRUD ******************************************/
 	@PostMapping("/user")
 	public ResponseEntity<String> userCreate(@RequestBody User user){
@@ -40,7 +41,7 @@ public class CRUDController {
 		return crudService.questionRead(id);
 	}
 	
-	@GetMapping("/question/")
+	@GetMapping("/question")
 	public ResponseEntity<Iterable<Question>> questionListRead(){
 		return crudService.questionListRead();
 	}
@@ -66,7 +67,7 @@ public class CRUDController {
 		return crudService.answerRead(id);
 	}
 	
-	@GetMapping("/answer/")
+	@GetMapping("/answer")
 	public ResponseEntity<Iterable<Answer>> answerListRead(){
 		return crudService.answerListRead();
 	}
