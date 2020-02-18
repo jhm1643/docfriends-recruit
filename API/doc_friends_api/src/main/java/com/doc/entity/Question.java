@@ -31,7 +31,7 @@ public class Question {
 	private LocalDateTime questionDate;
 	
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_email")
 	private User user;
 	
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)

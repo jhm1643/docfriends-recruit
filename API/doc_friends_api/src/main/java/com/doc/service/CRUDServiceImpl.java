@@ -33,6 +33,7 @@ public class CRUDServiceImpl implements CRUDService {
 
 	@Override
 	public ResponseEntity<String> questionCreate(Question question) {
+		
 		questionRepo.save(question);
 		return new ResponseEntity<String>("success",HttpStatus.OK);
 	}
