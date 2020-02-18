@@ -79,8 +79,7 @@ public class UserRestControllerTest {
 			ResponseEntity<String> createResult = this.trt.postForEntity(uri, createRequest, String.class);
 			assertEquals(200, createResult.getStatusCodeValue());
 			assertEquals("success", createResult.getBody());
-			
-			//questionListReatTest
+			//questionListReadtTest
 			ResponseEntity<Question[]> response =trt.getForEntity(uri, Question[].class);
 			List<Question> list = java.util.Arrays.asList(response.getBody());
 			for(Question q : list) {
@@ -91,6 +90,7 @@ public class UserRestControllerTest {
 				ResponseEntity<Question> response2 = trt.getForEntity(uri+"/"+q.getId(), Question.class);
 				assertEquals("title",response2.getBody().getTitle());
 				assertEquals("contents",response2.getBody().getContent());
+				assertEquals("carrey@carrey.com",response2.getBody().getUser().getEmail());
 				
 				//questionUpdateTest
 				Question updateQuestion = response2.getBody();
