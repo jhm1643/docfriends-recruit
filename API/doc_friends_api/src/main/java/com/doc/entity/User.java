@@ -24,8 +24,4 @@ public class User {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Question> questions = new ArrayList<>();
-	public void addQuestion(Question question) {
-		questions.add(question);
-		question.setUser(this);
-	}
 }

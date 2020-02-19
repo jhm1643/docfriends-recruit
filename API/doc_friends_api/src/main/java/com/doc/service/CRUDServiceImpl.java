@@ -1,5 +1,7 @@
 package com.doc.service;
 
+import java.util.Iterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +35,6 @@ public class CRUDServiceImpl implements CRUDService {
 
 	@Override
 	public ResponseEntity<String> questionCreate(Question question) {
-		
 		questionRepo.save(question);
 		return new ResponseEntity<String>("success",HttpStatus.OK);
 	}
@@ -45,6 +46,10 @@ public class CRUDServiceImpl implements CRUDService {
 
 	@Override
 	public ResponseEntity<Iterable<Question>> questionListRead() {
+		Iterator<Question> it = questionRepo.findAll().iterator();
+		while(it.hasNext()) {
+			log.info("carrey : "+it.next().getTitle());
+		}
 		return new ResponseEntity<Iterable<Question>>(questionRepo.findAll(),HttpStatus.OK);
 	}
 

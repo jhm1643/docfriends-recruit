@@ -4,12 +4,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.internal.util.collections.SingletonIterator;
+import org.junit.Before;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -17,17 +23,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import com.doc.controller.CRUDController;
 import com.doc.entity.Question;
 import com.doc.entity.User;
 import com.doc.repo.AnswerRepository;
 import com.doc.repo.QuestionRepository;
 import com.doc.repo.UserRepository;
+import com.doc.service.CRUDService;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class)
@@ -41,6 +50,16 @@ public class UserRestControllerTest {
 	private AnswerRepository ar;
 	@Autowired
 	private QuestionRepository qr;
+	
+	@Mock
+	private CRUDService service;
+	@InjectMocks
+	private CRUDController cc;
+	
+	@Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 	
 //	@Test
 //	public void jpaTest() {
@@ -96,11 +115,19 @@ public class UserRestControllerTest {
 		question.setContent("c");
 		question.setUser(user);
 		qr.save(question);
+
+//		ResponseEntity<Iterable<Question>> response = cc.questionListRead();
+//		assertEquals(200, response.getStatusCodeValue());
+//		Iterator<Question> it2 = response.getBody().iterator();
+//		while(it2.hasNext()) {
+//			assertEquals("abcd", it2.next().getUser().getEmail());
+//		}
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		String uri = "/doc-talk/question";
-		ResponseEntity<Question[]> response =trt.getForEntity(uri, Question[].class);
-		assertEquals(200,response.getStatusCodeValue());
+		ResponseEntity<Iterable<Question>> response = trt.exchange(uri, HttpMethod.GET,null ,new ParameterizedTypeReference<Iterable<Question>>() {
+		});
+		assertEquals(200, response.getStatusCodeValue());
 	}
 	
 //	@Test

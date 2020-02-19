@@ -33,11 +33,13 @@ public class Question {
 	@ManyToOne
 	@JoinColumn(name="user_email")
 	private User user;
-	
+	public void setUser(User user) {
+		if(this.user != null) {
+			this.user.getQuestions().remove(this);
+		}
+		this.user = user;
+		user.getQuestions().add(this);
+	}
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Answer> answers = new ArrayList<>();
-	public void addAnswer(Answer answer) {
-		answers.add(answer);
-		answer.setQuestion(this);
-	}
 }
