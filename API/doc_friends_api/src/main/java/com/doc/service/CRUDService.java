@@ -1,5 +1,7 @@
 package com.doc.service;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.ResponseEntity;
 
 import com.doc.entity.Answer;
@@ -10,6 +12,7 @@ public interface CRUDService {
 
 	public ResponseEntity<String> userCreate(User user);
 	public ResponseEntity<User> userRead(String email);
+	public ResponseEntity<String> login(User user, HttpServletRequest request);
 	
 	public ResponseEntity<String> questionCreate(Question question, String email);
 	public ResponseEntity<Question> questionRead(long id);

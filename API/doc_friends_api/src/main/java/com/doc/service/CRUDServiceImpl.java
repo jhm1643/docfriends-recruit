@@ -3,6 +3,8 @@ package com.doc.service;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,15 @@ public class CRUDServiceImpl implements CRUDService {
 	private AnswerRepository answerRepo;
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Override
+	public ResponseEntity<String> login(User user, HttpServletRequest request) {
+		if(userRepo.countByEmailAndPassword(user.getEmail(), user.getPassword())<1) {
+			return new ResponseEntity<String>("fail",HttpStatus.OK);
+		}
+		request.setAttribute("id", user.getEmail());
+		return new ResponseEntity<String>("success",HttpStatus.OK);
+	}
 	
 	@Override
 	public ResponseEntity<String> userCreate(User user) {

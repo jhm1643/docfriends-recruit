@@ -6,4 +6,5 @@ import com.doc.entity.User;
 
 public interface UserRepository extends JpaRepository<User, String>{
 
+	public long countByEmailAndPassword(String email, String password);
 }

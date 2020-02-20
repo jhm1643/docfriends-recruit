@@ -21,6 +21,7 @@ public class Answer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	private String title;
 	private String content;
 	private LocalDateTime answerDate;
 	public LocalDateTime getAnswerDate() {
