@@ -2,9 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>DOC Talk</title>
+<title>doc</title>
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/main.css}">
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+<script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+<script th:src="@{/static/js/main.js}"></script>
+<script th:src="@{/static/js/page.js}"></script>
 </head>
 <body>
-hello
+<div class="wrapper fadeInDown">
+  <div id="loginContent">
+   <!-- Tabs Titles -->
+    <h2 class="active" id="signIn"> Sign In </h2>
+    <h2 class="inactive underlineHover" id="signUp">Sign Up </h2>
+    <div class="fadeIn first">
+    </div>
+    <form id="loginForm">
+      <input type="text" id="userId" class="fadeIn second" placeholder="아이디">
+      <input type="password" id="userPassword" class="fadeIn third" placeholder="패스워드">
+      <input type="button" class="fadeIn fourth submitButton" id="login" value="로그인">
+    </form>
+  </div>
+</div>
 </body>
 </html>

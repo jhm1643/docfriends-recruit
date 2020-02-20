@@ -31,6 +31,9 @@ public class CRUDServiceImpl implements CRUDService {
 	
 	@Override
 	public ResponseEntity<String> userCreate(User user) {
+		if(userRepo.existsById(user.getEmail())) {
+			return new ResponseEntity<String>("exist email",HttpStatus.OK);
+		}
 		userRepo.save(user);
 		return new ResponseEntity<String>("success",HttpStatus.OK);
 	}
