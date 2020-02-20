@@ -29,6 +29,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
 
 import com.doc.controller.CRUDController;
 import com.doc.entity.Question;
@@ -50,16 +53,10 @@ public class UserRestControllerTest {
 	private AnswerRepository ar;
 	@Autowired
 	private QuestionRepository qr;
-	
+	@Autowired
+	private CRUDController cc;
 	@Mock
 	private CRUDService service;
-	@InjectMocks
-	private CRUDController cc;
-	
-	@Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
 	
 //	@Test
 //	public void jpaTest() {
@@ -106,28 +103,36 @@ public class UserRestControllerTest {
 	
 	@Test
 	public void questionTest() {
+		String uri = "/doc-talk";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
 		User user = new User();
 		user.setEmail("abcd");
 		user.setPassword("1234");
-		ur.save(user);
+		ResponseEntity<String> response1 = trt.postForEntity(uri+"/user", new HttpEntity<User>(user, headers), String.class);
+		assertEquals(200, response1.getStatusCodeValue());
+		assertEquals("success", response1.getBody());
+		
 		Question question = new Question();
 		question.setTitle("t");
 		question.setContent("c");
 		question.setUser(user);
-		qr.save(question);
-
-//		ResponseEntity<Iterable<Question>> response = cc.questionListRead();
+		ResponseEntity<String> response2 = trt.postForEntity(uri+"/question", new HttpEntity<Question>(question, headers), String.class);
+		assertEquals(200, response2.getStatusCodeValue());
+		assertEquals("success", response2.getBody());
+//		ResponseEntity<Iterable<Question>> response3 = trt.exchange(uri+"/question", HttpMethod.GET, null, new ParameterizedTypeReference<Iterable<Question>>() {
+//		});
 //		assertEquals(200, response.getStatusCodeValue());
 //		Iterator<Question> it2 = response.getBody().iterator();
 //		while(it2.hasNext()) {
 //			assertEquals("abcd", it2.next().getUser().getEmail());
 //		}
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		String uri = "/doc-talk/question";
-		ResponseEntity<Iterable<Question>> response = trt.exchange(uri, HttpMethod.GET,null ,new ParameterizedTypeReference<Iterable<Question>>() {
-		});
-		assertEquals(200, response.getStatusCodeValue());
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setContentType(MediaType.APPLICATION_JSON);
+//		String uri = "/doc-talk/question";
+//		Question[] questions = trt.getForObject(uri, Question[].class);
+	
 	}
 	
 //	@Test

@@ -30,10 +30,15 @@ public class CRUDController {
 		return crudService.userCreate(user);
 	}
 	
+	@GetMapping("/user/{email}")
+	public ResponseEntity<User> userRead(@PathVariable("email") String email){
+		return crudService.userRead(email);
+	}
 	/****************************************** Question CRUD ******************************************/
-	@PostMapping("/question")
-	public ResponseEntity<String> questionCreate(@RequestBody Question question){
-		return crudService.questionCreate(question);
+	@PostMapping("/question/{email}")
+	public ResponseEntity<String> questionCreate(@RequestBody Question question,
+												 @PathVariable("email") String email){
+		return crudService.questionCreate(question, email);
 	}
 	
 	@GetMapping("/question/{id}")
@@ -57,9 +62,10 @@ public class CRUDController {
 	}
 	
 	/****************************************** Answer CRUD ******************************************/
-	@PostMapping("/answer")
-	public ResponseEntity<String> answerCreate(@RequestBody Answer answer){
-		return crudService.answerCreate(answer);
+	@PostMapping("/answer/{question_id}")
+	public ResponseEntity<String> answerCreate(@RequestBody Answer answer,
+											   @PathVariable("question_id") long question_id){
+		return crudService.answerCreate(answer, question_id);
 	}
 	
 	@GetMapping("/answer/{id}")

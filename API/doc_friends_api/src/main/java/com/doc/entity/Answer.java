@@ -2,6 +2,7 @@ package com.doc.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,8 +23,10 @@ public class Answer {
 	private long id;
 	private String content;
 	private LocalDateTime answerDate;
-	
-	@ManyToOne
+	public LocalDateTime getAnswerDate() {
+		return LocalDateTime.now();
+	}
+	@ManyToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="question_id")
 	private Question question;
 }

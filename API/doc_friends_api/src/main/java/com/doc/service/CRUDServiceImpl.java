@@ -1,5 +1,6 @@
 package com.doc.service;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.doc.repo.AnswerRepository;
 import com.doc.repo.QuestionRepository;
 import com.doc.repo.UserRepository;
 
+import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -34,7 +36,13 @@ public class CRUDServiceImpl implements CRUDService {
 	}
 
 	@Override
-	public ResponseEntity<String> questionCreate(Question question) {
+	public ResponseEntity<User> userRead(String email) {
+		return new ResponseEntity<User>(userRepo.findById(email).get(),HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<String> questionCreate(Question question, String email) {
+		question.setUser(userRepo.findById(email).get());
 		questionRepo.save(question);
 		return new ResponseEntity<String>("success",HttpStatus.OK);
 	}
@@ -46,10 +54,6 @@ public class CRUDServiceImpl implements CRUDService {
 
 	@Override
 	public ResponseEntity<Iterable<Question>> questionListRead() {
-		Iterator<Question> it = questionRepo.findAll().iterator();
-		while(it.hasNext()) {
-			log.info("carrey : "+it.next().getTitle());
-		}
 		return new ResponseEntity<Iterable<Question>>(questionRepo.findAll(),HttpStatus.OK);
 	}
 
@@ -66,7 +70,8 @@ public class CRUDServiceImpl implements CRUDService {
 	}
 
 	@Override
-	public ResponseEntity<String> answerCreate(Answer answer) {
+	public ResponseEntity<String> answerCreate(Answer answer, long question_id) {
+		answer.setQuestion(questionRepo.findById(question_id).get());
 		answerRepo.save(answer);
 		return new ResponseEntity<String>("success",HttpStatus.OK);
 	}

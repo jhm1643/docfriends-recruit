@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,17 +30,16 @@ public class Question {
 	private String hashTag;
 	private String sourceUrl;
 	private LocalDateTime questionDate;
-	
-	@ManyToOne
+	public LocalDateTime getQuestionDate() {
+		return LocalDateTime.now();
+	}
+	@ManyToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="user_email")
 	private User user;
-	public void setUser(User user) {
-		if(this.user != null) {
-			this.user.getQuestions().remove(this);
-		}
-		this.user = user;
-		user.getQuestions().add(this);
-	}
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Answer> answers = new ArrayList<>();
+//	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<Answer> answers = new ArrayList<>();
+//	public void addAnswer(Answer answer) {
+//		answers.add(answer);
+//		answer.setQuestion(this);
+//	}
 }
