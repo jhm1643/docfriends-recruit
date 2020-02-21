@@ -1,3 +1,8 @@
+# 설정 방법
+로컬환경에서 실행 후 http://127.0.0.1:9090/doc-talk/login으로 접속
+id : test@test.com
+password : 1234
+
 # Doctalk API & Front
 이 프로젝트의 목적은 Doctalk 웹의 데이터를 반환하는 RESTFul API를 만들고 Front js를 활용해서 UI를 만드는 것 입니다.
 
