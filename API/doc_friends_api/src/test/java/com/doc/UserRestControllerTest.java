@@ -1,22 +1,11 @@
 package com.doc;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
-import java.net.URI;
-import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.internal.util.collections.SingletonIterator;
-import org.junit.Before;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +18,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.doc.controller.CrudController;
 import com.doc.entity.Question;
 import com.doc.entity.User;
 import com.doc.repo.AnswerRepository;
 import com.doc.repo.QuestionRepository;
-import com.doc.repo.UserRepository;
 import com.doc.service.CRUDService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class)
@@ -48,16 +34,55 @@ public class UserRestControllerTest {
 	@Autowired
     private TestRestTemplate trt;
 	@Autowired
-	private UserRepository ur;
-	@Autowired
-	private AnswerRepository ar;
-	@Autowired
 	private QuestionRepository qr;
-	@Autowired
-	private CrudController cc;
 	@Mock
 	private CRUDService service;
 	
+	/*
+	 * user, question, answer 시작할 때 bean으로 db에 등록함
+	 * REST API 응답 값과 실제 데이터베이스 값 비교
+	 * REST API 호출 성공 시 200 code 호출
+	 * login 성공 시 response body에 success 리턴
+	 * question, answer data response body에 데이터 값 json형태로 리턴
+	 * */
+	@Test
+	@Transactional
+	public void commonTest() {
+		String uri = "/doc-talk";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		User user = new User();
+		user.setEmail("test@test.com");
+		user.setPassword("1234");
+		
+		//로그인 테스트
+		ResponseEntity<String> response1 = trt.postForEntity(uri+"/login", new HttpEntity<User>(user, headers), String.class);
+		assertEquals(200, response1.getStatusCodeValue());
+		assertEquals("success", response1.getBody());
+		
+		//질문 리스트 테스트
+		ResponseEntity<List<Question>> response2 = trt.exchange(uri+"/question", HttpMethod.GET, null, new ParameterizedTypeReference<List<Question>>() {});
+		assertEquals(200, response2.getStatusCodeValue());
+		try {
+			assertEquals(new ObjectMapper().writeValueAsString(response2.getBody()), new ObjectMapper().writeValueAsString(qr.findAll()));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		//질문 상세 내용 및 답변 상세 내용 확인 테스트
+		for(int i=0; i<response2.getBody().size(); i++) {
+			Question question1 = response2.getBody().get(i);
+			ResponseEntity<Question> response3 = trt.getForEntity(uri+"/question/"+question1.getId(), Question.class);
+			assertEquals(200, response3.getStatusCodeValue());
+			try {
+				assertEquals(new ObjectMapper().writeValueAsString(question1), new ObjectMapper().writeValueAsString(response3.getBody()));
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
 //	@Test
 //	public void jpaTest() {
 //		User user = new User();
@@ -100,40 +125,6 @@ public class UserRestControllerTest {
 //		}
 //		
 //	}
-	
-	@Test
-	public void questionTest() {
-		String uri = "/doc-talk";
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		
-		User user = new User();
-		user.setEmail("abcd");
-		user.setPassword("1234");
-		ResponseEntity<String> response1 = trt.postForEntity(uri+"/user", new HttpEntity<User>(user, headers), String.class);
-		assertEquals(200, response1.getStatusCodeValue());
-		assertEquals("success", response1.getBody());
-		
-		Question question = new Question();
-		question.setTitle("t");
-		question.setContent("c");
-		question.setUser(user);
-		ResponseEntity<String> response2 = trt.postForEntity(uri+"/question", new HttpEntity<Question>(question, headers), String.class);
-		assertEquals(200, response2.getStatusCodeValue());
-		assertEquals("success", response2.getBody());
-//		ResponseEntity<Iterable<Question>> response3 = trt.exchange(uri+"/question", HttpMethod.GET, null, new ParameterizedTypeReference<Iterable<Question>>() {
-//		});
-//		assertEquals(200, response.getStatusCodeValue());
-//		Iterator<Question> it2 = response.getBody().iterator();
-//		while(it2.hasNext()) {
-//			assertEquals("abcd", it2.next().getUser().getEmail());
-//		}
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.setContentType(MediaType.APPLICATION_JSON);
-//		String uri = "/doc-talk/question";
-//		Question[] questions = trt.getForObject(uri, Question[].class);
-	
-	}
 	
 //	@Test
 //	@Order(2)

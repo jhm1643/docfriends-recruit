@@ -1,6 +1,7 @@
 package com.doc.entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,9 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,7 @@ public class Answer {
 	private String title;
 	private String content;
 	private LocalDateTime answerDate = LocalDateTime.now();
+	
 	@ManyToOne(cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
 	@JoinColumn(name="question_id")
 	@JsonIgnore

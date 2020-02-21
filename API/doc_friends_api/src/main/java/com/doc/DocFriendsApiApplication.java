@@ -65,7 +65,7 @@ public class DocFriendsApiApplication {
 		qr.save(q3);
 		
 		Answer a1 = new Answer();
-		a1.setTitle("정동원 우너장님의 답변");
+		a1.setTitle("정동원 원장님의 답변");
 		a1.setContent("안녕하세요. 닥톡-네이버 지식iN 상담한의사 정동원입니다....");
 		a1.setQuestion(qr.findById((long)1).get());
 		ar.save(a1);

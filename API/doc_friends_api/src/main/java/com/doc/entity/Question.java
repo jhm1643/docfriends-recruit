@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -42,7 +43,4 @@ public class Question {
 	
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Answer> answers = new ArrayList<>();
-	
-	@Transient
-	private long answerCount = getAnswers().size();
 }

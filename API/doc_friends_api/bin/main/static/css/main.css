@@ -321,3 +321,27 @@ input[type=text]:placeholder {
 * {
   box-sizing: border-box;
 }
+
+
+
+.question, .answer{
+	border : 1px solid black;
+}
+.question_title, .answer_title{
+	font-weight: bold;
+}
+.question_detail_date, .answer_date{
+	color : #8c8c8c;
+}
+.question_detail_content, .answer_content{
+	color : black;
+}
+.question_hashTag{
+	color : #0066ff;
+}
+.question_content{
+	color : #8c8c8c;
+}
+.answer_count{
+	color : #33cc33;
+}

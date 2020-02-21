@@ -51,14 +51,37 @@ $(document).ready(function(){
 					alert("로그인 실패 [code : "+jqXHR+" ]");
 				})
 	});
-
+	
+	var QuestionListData;
+	//질문 리스트 페이지
 	var getQuestions = function(){
 		$.get("/doc-talk/question",
 			function(data){
-				$("body").html(mainPage(data));
+			QuestionListData=data;
+				$("body").html(questionListPage(data));
 			}).fail(function(jqXHR){
 				alert("에러 [code : "+jqXHR.code+" ]");
 			});
+	}
+
+	//질문 상세 페이지
+	questionDetail = function(id){
+		$.get("/doc-talk/question/"+id,
+				function(data){
+					$("body").html(questionDetailPage(data));
+				}).fail(function(jqXHR){
+					alert("에러 [code : "+jqXHR.code+" ]");
+				});
+	}
+	
+	dateFormatSet = function(date){
+		date = date.replace("T"," ");
+		date = date.substr(0, date.length-4);
+		return date;
+	}
+	
+	questionListPageGo = function(){
+		$("body").html(questionListPage(QuestionListData));
 	}
 })
 
