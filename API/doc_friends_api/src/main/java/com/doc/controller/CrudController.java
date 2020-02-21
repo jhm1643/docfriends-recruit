@@ -1,5 +1,7 @@
 package com.doc.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,7 +25,7 @@ import com.doc.service.CRUDService;
 
 @RestController
 @RequestMapping("/doc-talk")
-public class CRUDController {
+public class CrudController {
 
 	@Autowired
 	private CRUDService crudService;
@@ -32,12 +34,6 @@ public class CRUDController {
 	@PostMapping("/user")
 	public ResponseEntity<String> userCreate(@RequestBody User user){
 		return crudService.userCreate(user);
-	}
-	
-	@PostMapping("/login")
-	public ResponseEntity<String> loginTry(@RequestBody User user,
-										   HttpServletRequest request){
-		return crudService.login(user,request);
 	}
 	
 	@GetMapping("/user/{email}")
@@ -57,7 +53,7 @@ public class CRUDController {
 	}
 	
 	@GetMapping("/question")
-	public ResponseEntity<Iterable<Question>> questionListRead(){
+	public ResponseEntity<List<Question>> questionListRead(){
 		return crudService.questionListRead();
 	}
 	
@@ -84,7 +80,7 @@ public class CRUDController {
 	}
 	
 	@GetMapping("/answer")
-	public ResponseEntity<Iterable<Answer>> answerListRead(){
+	public ResponseEntity<List<Answer>> answerListRead(){
 		return crudService.answerListRead();
 	}
 	

@@ -2,6 +2,7 @@ package com.doc.service;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,15 +33,6 @@ public class CRUDServiceImpl implements CRUDService {
 	private UserRepository userRepo;
 	
 	@Override
-	public ResponseEntity<String> login(User user, HttpServletRequest request) {
-		if(userRepo.countByEmailAndPassword(user.getEmail(), user.getPassword())<1) {
-			return new ResponseEntity<String>("fail",HttpStatus.OK);
-		}
-		request.setAttribute("id", user.getEmail());
-		return new ResponseEntity<String>("success",HttpStatus.OK);
-	}
-	
-	@Override
 	public ResponseEntity<String> userCreate(User user) {
 		if(userRepo.existsById(user.getEmail())) {
 			return new ResponseEntity<String>("exist email",HttpStatus.OK);
@@ -67,8 +59,8 @@ public class CRUDServiceImpl implements CRUDService {
 	}
 
 	@Override
-	public ResponseEntity<Iterable<Question>> questionListRead() {
-		return new ResponseEntity<Iterable<Question>>(questionRepo.findAll(),HttpStatus.OK);
+	public ResponseEntity<List<Question>> questionListRead() {
+		return new ResponseEntity<List<Question>>(questionRepo.findAll(),HttpStatus.OK);
 	}
 
 	@Override
@@ -96,8 +88,8 @@ public class CRUDServiceImpl implements CRUDService {
 	}
 
 	@Override
-	public ResponseEntity<Iterable<Answer>> answerListRead() {
-		return new ResponseEntity<Iterable<Answer>>(answerRepo.findAll(),HttpStatus.OK);
+	public ResponseEntity<List<Answer>> answerListRead() {
+		return new ResponseEntity<List<Answer>>(answerRepo.findAll(),HttpStatus.OK);
 	}
 
 	@Override

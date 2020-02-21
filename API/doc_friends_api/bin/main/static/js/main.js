@@ -43,8 +43,7 @@ $(document).ready(function(){
 				}),
 				function(data){
 					if(data == 'success'){
-						$("body").html(mainPage());
-						
+						getQuestions();
 					}else if(data == 'fail'){
 						alert("아이디 또는 패스워드가 잘못되었습니다.");
 					}
@@ -52,6 +51,15 @@ $(document).ready(function(){
 					alert("로그인 실패 [code : "+jqXHR+" ]");
 				})
 	});
+
+	var getQuestions = function(){
+		$.get("/doc-talk/question",
+			function(data){
+				$("body").html(mainPage(data));
+			}).fail(function(jqXHR){
+				alert("에러 [code : "+jqXHR.code+" ]");
+			});
+	}
 })
 
 	

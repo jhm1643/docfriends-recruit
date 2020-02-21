@@ -25,11 +25,22 @@
 						"</div>"+
 					'</div>';
 	
-	 var mainPage = function(){
+	 var mainPage = function(data){
+		console.warn(data);
 	 	var html = '<div class="wrapper fadeInDown">'+
-	 	'<div id="mainContent">'+
-	 		'aa'+
-	 	"</div>"+
+		 '<div id="mainContent">';
+		 for(var i=0;i<data.length;i++){
+			 html+=
+			 '<div class="question>'+
+				'<div class="question_title">'+data[i].title+'</div>'+
+				'<div class="question_hashTag">'+data[i].hashTag+'</div>'+
+				'<div class="question_content">'+data[i].content+'</div>'+
+				'<div class="question_content">'+data[i].content+'</div>'+
+				'<div class="answer_count">답변'+data[i].answers.length+'</div>'+
+			'<div class="question>';
+		 }
+		 
+		 html+="</div>"+
 	 	'</div>';
 	 	return html;
 	}

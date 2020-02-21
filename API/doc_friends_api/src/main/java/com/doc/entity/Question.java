@@ -14,6 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.data.annotation.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,17 +33,16 @@ public class Question {
 	private String content;
 	private String hashTag;
 	private String sourceUrl;
-	private LocalDateTime questionDate;
-	public LocalDateTime getQuestionDate() {
-		return LocalDateTime.now();
-	}
-	@ManyToOne(cascade={CascadeType.ALL})
+	private LocalDateTime questionDate = LocalDateTime.now();
+	
+	@JsonIgnore
+	@ManyToOne(cascade={CascadeType.ALL}, fetch = FetchType.LAZY)
 	@JoinColumn(name="user_email")
 	private User user;
-//	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-//	private List<Answer> answers = new ArrayList<>();
-//	public void addAnswer(Answer answer) {
-//		answers.add(answer);
-//		answer.setQuestion(this);
-//	}
+	
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private List<Answer> answers = new ArrayList<>();
+	
+	@Transient
+	private long answerCount = getAnswers().size();
 }

@@ -33,7 +33,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
-import com.doc.controller.CRUDController;
+import com.doc.controller.CrudController;
 import com.doc.entity.Question;
 import com.doc.entity.User;
 import com.doc.repo.AnswerRepository;
@@ -54,7 +54,7 @@ public class UserRestControllerTest {
 	@Autowired
 	private QuestionRepository qr;
 	@Autowired
-	private CRUDController cc;
+	private CrudController cc;
 	@Mock
 	private CRUDService service;
 	
